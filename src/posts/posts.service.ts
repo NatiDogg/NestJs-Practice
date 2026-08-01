@@ -38,9 +38,10 @@ export class PostsService {
          }
          return post
       }
-      createPost(postDetails: Omit<Post, 'createdAt'>):Post[]{
+      createPost(postDetails: Omit<Post, 'createdAt' | 'id'>):Post[]{
 
          const newlyCreatedPost:Post = {
+            id: this.posts.length + 1,
              ...postDetails,
              createdAt: new Date
              
@@ -51,7 +52,7 @@ export class PostsService {
 
          
       }
-      updatePost(id: number, updatePostDetails:Partial<Omit<Post, 'createdAt'>>): Post[]{
+      updatePost(id: number, updatePostDetails:Partial<Omit<Post, 'createdAt' | 'id'>>): Post[]{
          
          const postIndex = this.posts.findIndex((post)=> post.id === id);
          if(postIndex === -1){
@@ -71,7 +72,7 @@ export class PostsService {
           if(postIndex === -1){
              throw new NotFoundException(`Post with ID: ${id} is not found`)
           }
-          this.posts.splice(1,postIndex)
+          this.posts.splice(postIndex,1)
           return {
             success: true,
             message: 'Post Deleted Successfully',
