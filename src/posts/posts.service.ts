@@ -61,7 +61,8 @@ export class PostsService {
 
          this.posts[postIndex] = {
              ...this.posts[postIndex],
-             ...updatePostDetails
+             ...updatePostDetails,
+             updatedAt: new Date
          }
          return this.posts
 
