@@ -33,6 +33,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   deletePost(@Param('id',PostExistPipe) id: string) {
     return this.postsService.deletePost(id);
   }
