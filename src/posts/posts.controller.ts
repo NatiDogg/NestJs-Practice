@@ -17,7 +17,7 @@ export class PostsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findOne(@Param('id', PostExistPipe) id: string) {
+  async findOne(@Param('id') id: string) {
     return this.postsService.findOne(id);
   }
 
@@ -28,13 +28,13 @@ export class PostsController {
   }
 
   @Patch(':id')
-  async updatePost(@Param('id', PostExistPipe) id: string, @Body() postDetails: UpdatePostDto) {
+  async updatePost(@Param('id') id: string, @Body() postDetails: UpdatePostDto) {
     return await this.postsService.updatePost(id, postDetails);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  deletePost(@Param('id',PostExistPipe) id: string) {
+  deletePost(@Param('id') id: string) {
     return this.postsService.deletePost(id);
   }
 
