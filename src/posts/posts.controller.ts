@@ -11,29 +11,29 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  async findAll() {
+    return await this.postsService.findAll();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id', ParseIntPipe, PostExistPipe) id: number) {
+  async findOne(@Param('id', PostExistPipe) id: string) {
     return this.postsService.findOne(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createPost(@Body() postDetails: CreatePostDto) {
-    return this.postsService.createPost(postDetails);
+  async createPost(@Body() postDetails: CreatePostDto) {
+    return await this.postsService.createPost(postDetails);
   }
 
   @Patch(':id')
-  updatePost(@Param('id', ParseIntPipe, PostExistPipe) id: number, @Body() postDetails: UpdatePostDto) {
-    return this.postsService.updatePost(id, postDetails);
+  async updatePost(@Param('id', PostExistPipe) id: string, @Body() postDetails: UpdatePostDto) {
+    return await this.postsService.updatePost(id, postDetails);
   }
 
   @Delete(':id')
-  deletePost(@Param('id', ParseIntPipe, PostExistPipe) id: number) {
+  deletePost(@Param('id',PostExistPipe) id: string) {
     return this.postsService.deletePost(id);
   }
 
