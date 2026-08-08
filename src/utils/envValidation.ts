@@ -1,7 +1,8 @@
 import {z} from 'zod'
 
 const envSchema = z.object({
-    APP_NAME: z.string().min(5)
+    APP_NAME: z.string().min(5),
+    DATABASE_URL: z.string().min(4)
 })
 
 export const validate = (config:Record<string,unknown>)=>{
