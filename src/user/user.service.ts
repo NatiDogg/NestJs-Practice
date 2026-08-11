@@ -14,7 +14,7 @@ export class UserService {
 
 
       async registerUser(userDetails:RegisterDto){
-          return await this.prisma.user.create({data: {...userDetails}})
+          return await this.prisma.user.create({data: {...userDetails}, omit:{password: true}})
       }
       async findUserByEmail(email: string){
           return await this.prisma.user.findUnique({where: {email}})
