@@ -1,8 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { LoginDto } from './dto/loginDto';
 import { UserService } from 'src/user/user.service';
 import { BcryptService } from 'src/utils/bcryptService';
+import { User } from 'prisma/generated/prisma/client';
+
 
 @Injectable()
 export class AuthService {
@@ -38,13 +40,30 @@ export class AuthService {
 
        async login(loginDetails: LoginDto){
              try {
-                
+                const user = await this.userService.findUserByEmail(loginDetails.email.toLowerCase())
+
+                if(!user){
+                     throw new UnauthorizedException("Invalid Credentials!")
+                }
+                const comparePassword = await this.bcryptService.matchPassword(loginDetails.password, user.password)
+                if(!comparePassword){
+                      throw new UnauthorizedException("Invalid Credentials!")
+                }
+
              } catch (error) {
                 throw error
              }
        }
 
        async refreshToken(){
+
+       }
+
+       private generateTokens(user:Omit<User, 'password'>){
+
+          
+
+            
 
        }
     
