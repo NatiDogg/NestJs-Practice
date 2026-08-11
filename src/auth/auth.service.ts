@@ -4,12 +4,13 @@ import { LoginDto } from './dto/loginDto';
 import { UserService } from 'src/user/user.service';
 import { BcryptService } from 'src/utils/bcryptService';
 import { User } from 'prisma/generated/prisma/client';
+import { JwtService } from 'src/utils/jwtService';
 
 
 @Injectable()
 export class AuthService {
 
-        constructor(private readonly userService: UserService, private readonly bcryptService:BcryptService){}
+        constructor(private readonly userService: UserService, private readonly bcryptService:BcryptService, private readonly jwtService:JwtService){}
  
        async register(registerDetails: RegisterDto){
             try {
@@ -49,6 +50,8 @@ export class AuthService {
                 if(!comparePassword){
                       throw new UnauthorizedException("Invalid Credentials!")
                 }
+                 const {password, ...safeUser} = user
+                return this.generateTokens(safeUser,'User Logged in Successfully!')
 
              } catch (error) {
                 throw error
@@ -59,7 +62,22 @@ export class AuthService {
 
        }
 
-       private generateTokens(user:Omit<User, 'password'>){
+       private generateTokens(user:Omit<User, 'password'>, message: string){
+           const payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              role: user.role
+           }
+          const accessToken = this.jwtService.createAccessToken(payload)
+          const refreshToken = this.jwtService.createRefreshToken(payload)
+
+           return {
+             success: true,
+             message: message,
+             accessToken: accessToken,
+             refreshToken: refreshToken
+           }
 
           
 

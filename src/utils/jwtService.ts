@@ -13,9 +13,25 @@ export class JwtService{
            return jwt.sign(userPayload, this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN'), {expiresIn: '15m'})
      }
 
-     createRefreshToken(){}
-     verifyAccessToken(){}
-     verifyRefreshToken(){}
+     createRefreshToken(userPayload: {id: string, name: string, email: string, role:Role}){
+           return jwt.sign(userPayload,this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN'), {expiresIn: '7d'})
+     }
+     verifyAccessToken(token: string){
+           return jwt.verify(token,this.configService.getOrThrow<string>('JWT_ACCESS_TOKEN')) as {
+                 id: string,
+                 name: string,
+                 email: string,
+                 role: Role
+           }
+     }
+     verifyRefreshToken(token: string){
+           return jwt.verify(token,this.configService.getOrThrow<string>('JWT_REFRESH_TOKEN')) as {
+                 id: string,
+                 name: string,
+                 email: string,
+                 role: Role
+           }
+     }
 
 
 }
