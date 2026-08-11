@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { envConfig } from "./envValidation";
+import jwt from 'jsonwebtoken'
 @Injectable()
 
 export class JwtService{
 
-     constructor(){}
+     constructor(private configService:ConfigService<envConfig>){}
 
-     createAccessToken(){}
+     createAccessToken(userPayload){
+       
+     }
 
      createRefreshToken(){}
      verifyAccessToken(){}

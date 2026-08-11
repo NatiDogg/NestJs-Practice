@@ -3,6 +3,8 @@ model Post{
     title String
     content String
     authorName String
+     user User @relation(fields: [userId], references: [id])
+     userId String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
