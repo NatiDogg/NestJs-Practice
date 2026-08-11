@@ -3,7 +3,6 @@ import { PostsService } from './posts.service';
 
 import { CreatePostDto } from './dtos/createPostDto';
 import { UpdatePostDto } from './dtos/updatePostDto';
-import { PostExistPipe } from './pipes/postExistPipe';
 
 @Controller('posts')
 export class PostsController {
