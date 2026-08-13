@@ -61,8 +61,24 @@ export class AuthService {
              }
        }
 
-       async refreshToken(token: string){
-       
+       async refreshToken(refreshToken: string){
+             try {
+               const payload = this.jwtService.verifyRefreshToken(refreshToken)
+
+             if(!payload){
+               throw new UnauthorizedException("Invalid Token")
+             }
+
+             const user = await this.userService.findUserById(payload.id)
+             if(!user){
+               throw new UnauthorizedException("user Not Found")
+             }
+             return this.generateTokens(user,'Refresh Token issued Successfully')
+             } catch (error) {
+               throw new UnauthorizedException("Invalid Token")
+             }
+
+
        }
 
        private generateTokens(user:Omit<User, 'password'>, message: string){
@@ -78,6 +94,7 @@ export class AuthService {
            return {
              success: true,
              message: message,
+             user: user,
              accessToken: accessToken,
              refreshToken: refreshToken
            }
