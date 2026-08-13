@@ -39,7 +39,7 @@ export class AuthService {
 
        }
        async createAdmin(registerDetails:RegisterDto){
-
+            
        }
 
        async login(loginDetails: LoginDto){
