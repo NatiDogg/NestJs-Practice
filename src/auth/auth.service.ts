@@ -38,6 +38,9 @@ export class AuthService {
     
 
        }
+       async createAdmin(registerDetails:RegisterDto){
+
+       }
 
        async login(loginDetails: LoginDto){
              try {
@@ -58,8 +61,8 @@ export class AuthService {
              }
        }
 
-       async refreshToken(){
-
+       async refreshToken(token: string){
+       
        }
 
        private generateTokens(user:Omit<User, 'password'>, message: string){

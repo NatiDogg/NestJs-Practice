@@ -12,7 +12,8 @@ export class PostsService {
      async createPost(postDetails:CreatePostDto): Promise<{success:boolean, message: string, post: Post}>{
         try {
           const newlyCreatedPost = await this.prisma.post.create({data:{
-           ...postDetails
+           ...postDetails,
+           userId: 'abecdedfghi'
         }})
 
         return {
