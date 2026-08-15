@@ -9,11 +9,11 @@ export class PostsService {
 
      constructor(private prisma:PrismaService){}
 
-     async createPost(postDetails:CreatePostDto): Promise<{success:boolean, message: string, post: Post}>{
+     async createPost(postDetails:CreatePostDto, userId: string): Promise<{success:boolean, message: string, post: Post}>{
         try {
           const newlyCreatedPost = await this.prisma.post.create({data:{
            ...postDetails,
-           userId: 'abecdedfghi'
+           userId: userId
         }})
 
         return {
@@ -55,9 +55,15 @@ export class PostsService {
           }
      }
 
-     async deletePost(id: string){
+     async deletePost(id: string, userId: string){
          try {
-            await this.prisma.post.delete({where:{id}})
+           const result =  await this.prisma.post.deleteMany({where:{
+                id,
+                userId: userId
+            }})
+            if(result.count === 0){
+                throw new NotFoundException(`Post with ID ${id} not found or unauthorized`);
+            }
             return {
                success: true,
                message: 'Post deleted Sucessfully'

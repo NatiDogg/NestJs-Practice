@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param,  Patch, Post, UseGuards } from '@nestjs/common';
 import { PostsService } from './posts.service';
 
 import { CreatePostDto } from './dtos/createPostDto';
@@ -7,6 +7,8 @@ import { JwtAuthGuard } from 'src/auth/guards/jwtAuthGuard';
 import { Roles } from 'src/auth/decorators/rolesDecorators';
 import { Role } from 'prisma/generated/prisma/enums';
 import { RolesGuard } from 'src/auth/guards/rolesGuard';
+import { CurrentUser } from 'src/auth/decorators/currentUserDecorator';
+import { User } from 'prisma/generated/prisma/client';
 
 @Controller('posts')
 export class PostsController {
@@ -27,8 +29,8 @@ export class PostsController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  async createPost(@Body() postDetails: CreatePostDto) {
-    return await this.postsService.createPost(postDetails);
+  async createPost(@Body() postDetails: CreatePostDto, @CurrentUser() user:Omit<User, 'password'>) {
+    return await this.postsService.createPost(postDetails, user.id );
   }
 
   @Patch(':id')
@@ -39,9 +41,9 @@ export class PostsController {
   @Delete(':id')
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard,RolesGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
-  deletePost(@Param('id') id: string) {
-    return this.postsService.deletePost(id);
+  @HttpCode(HttpStatus.OK)
+  deletePost(@Param('id') id: string, @CurrentUser() user: Omit<User, 'password'>) {
+    return this.postsService.deletePost(id, user.id);
   }
 
 }
