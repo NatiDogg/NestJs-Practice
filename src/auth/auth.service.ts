@@ -3,7 +3,7 @@ import { RegisterDto } from './dto/registerDto';
 import { LoginDto } from './dto/loginDto';
 import { UserService } from 'src/user/user.service';
 import { BcryptService } from 'src/utils/bcryptService';
-import { User } from 'prisma/generated/prisma/client';
+import { Prisma, User } from 'prisma/generated/prisma/client';
 import { JwtService } from 'src/utils/jwtService';
 
 
@@ -39,6 +39,22 @@ export class AuthService {
 
        }
        async createAdmin(registerDetails:RegisterDto){
+
+          const normalizedEmail = registerDetails.email.toLowerCase()
+
+          try {
+            const newlyCreatedAdmin = await this.userService.registerAdmin(registerDetails)
+              return {
+                  success: true,
+                  message: 'Admin Registered Successfully',
+                  user: newlyCreatedAdmin
+               }
+          } catch (error) {
+               if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002'){
+                throw new ConflictException("a user with this email already exists")
+               }
+               throw error
+          }
             
        }
 

@@ -22,6 +22,12 @@ export class UserService {
       async findUserById(id: string){
           return await this.prisma.user.findUnique({where: {id},omit:{password: true}})
       }
+      async registerAdmin(adminDetails:RegisterDto){
+          return await this.prisma.user.create({data:{
+             ...adminDetails,
+             role: 'ADMIN'
+          }})
+      }
 
    
 
