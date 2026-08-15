@@ -11,6 +11,6 @@ import { RolesGuard } from './guards/rolesGuard';
   providers: [AuthService,BcryptService,JwtService,JwtStrategy,RolesGuard],
   controllers: [AuthController],
   imports: [UserModule,PassportModule.register({defaultStrategy: 'jwt'})],
-  exports: [AuthService,RolesGuard]
+  exports: [AuthService,RolesGuard,PassportModule]
 })
 export class AuthModule {}
