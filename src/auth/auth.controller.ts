@@ -8,6 +8,7 @@ import { CurrentUser } from './decorators/currentUserDecorator';
 import { Role, User } from 'prisma/generated/prisma/client';
 import { Roles } from './decorators/rolesDecorators';
 import { RolesGuard } from './guards/rolesGuard';
+import { LoginThrottlerGuard } from './guards/loginThrottlerGuard';
 
 
 @Controller('auth')
@@ -20,6 +21,7 @@ export class AuthController {
              return await this.authService.register(registerDetails)
         }
 
+        @UseGuards(LoginThrottlerGuard)
         @Post("login")
         async login(@Body() loginDetails: LoginDto){
               return await this.authService.login(loginDetails)
