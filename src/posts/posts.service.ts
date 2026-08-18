@@ -3,7 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePostDto } from './dtos/createPostDto';
 import { UpdatePostDto } from './dtos/updatePostDto';
 import { Post, Prisma } from 'prisma/generated/prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+
 @Injectable()
 export class PostsService {
 
