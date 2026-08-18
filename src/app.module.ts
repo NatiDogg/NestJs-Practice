@@ -9,6 +9,7 @@ import { PostsModule } from './posts/posts.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import {ThrottlerModule} from '@nestjs/throttler'
+import {CacheModule} from '@nestjs/cache-manager'
 //root module
 @Module({
   imports: [
@@ -21,6 +22,13 @@ import {ThrottlerModule} from '@nestjs/throttler'
             }
         ]
     }),
+    CacheModule.register({
+        isGlobal: true,
+        ttl: 30000,
+        max : 100
+
+    }),
+    
     HelloModule, UserModule, PostsModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
