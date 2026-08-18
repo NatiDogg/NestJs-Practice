@@ -1,5 +1,11 @@
+import { IsOptional,IsString, MaxLength } from "class-validator";
+import { PaginationQueryDto } from "src/common/dto/paginationQueryDto";
 
 
-export class FindPostQueryDto{
-    
+export class FindPostsQueryDto extends PaginationQueryDto{
+     
+      @IsOptional()
+      @IsString({message: 'Title must be a string'})
+      @MaxLength(100, {message: 'Title search can not exceed 100'})
+      title?: string 
 }
