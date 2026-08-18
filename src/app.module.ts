@@ -8,10 +8,19 @@ import { validate } from './utils/envValidation';
 import { PostsModule } from './posts/posts.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import {ThrottlerModule} from '@nestjs/throttler'
 //root module
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal: true, validate}),
+    ThrottlerModule.forRoot({
+        throttlers: [
+            {
+              ttl: 60000,
+              limit: 5
+            }
+        ]
+    }),
     HelloModule, UserModule, PostsModule, PrismaModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
