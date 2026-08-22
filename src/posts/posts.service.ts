@@ -28,6 +28,9 @@ export class PostsService {
            userId: userId
         }})
 
+         // invalidate the exisiting cache
+         await this.invalidateAllExistingCaches()
+
         return {
          success: true,
          message: 'Post Created Successfully',
@@ -126,6 +129,8 @@ export class PostsService {
                    ...updatePostDetails
                 }
              })
+              await this.cacheManager.del(`post_${id}`)
+              await this.invalidateAllExistingCaches()
              return updatedPost
           } catch (error) {
               if(error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025'){
@@ -144,6 +149,8 @@ export class PostsService {
             if(result.count === 0){
                 throw new NotFoundException(`Post with ID ${id} not found or unauthorized`);
             }
+            await this.cacheManager.del(`post_${id}`)
+            await this.invalidateAllExistingCaches()
             return {
                success: true,
                message: 'Post deleted Sucessfully'
@@ -154,6 +161,16 @@ export class PostsService {
             }
             throw error;
          }
+     }
+
+     private async invalidateAllExistingCaches():Promise<void>{
+          console.log(`invalidating ${this.postListCacheKeys.size} list cache entries`)
+
+          for (const key of this.postListCacheKeys){
+               await this.cacheManager.del(key)
+          }
+
+          this.postListCacheKeys.clear()
      }
 
       
