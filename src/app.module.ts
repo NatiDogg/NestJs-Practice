@@ -10,6 +10,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import {ThrottlerModule} from '@nestjs/throttler'
 import {CacheModule} from '@nestjs/cache-manager'
+import { FileUploadModule } from './file-upload/file-upload.module';
 //root module
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import {CacheModule} from '@nestjs/cache-manager'
 
     }),
     
-    HelloModule, UserModule, PostsModule, PrismaModule, AuthModule],
+    HelloModule, UserModule, PostsModule, PrismaModule, AuthModule, FileUploadModule],
   controllers: [AppController],
   providers: [AppService],
 })
