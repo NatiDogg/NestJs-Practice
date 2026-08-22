@@ -8,5 +8,8 @@ export const cloudinaryProvider = {
              cloud_name: env.CLOUD_NAME,
              api_secret: env.API_SECRET
            })
+
+           // return configured cloudinary instance
+           return cloudinary
       }
 }
