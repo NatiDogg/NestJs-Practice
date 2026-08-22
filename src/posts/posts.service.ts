@@ -102,10 +102,19 @@ export class PostsService {
      }
 
      async findOne(id: string): Promise<Post>{
+           const cacheKey =  `post_${id}`
+           const cachedPost = await this.cacheManager.get<Post>(cacheKey)
+            if(cachedPost){
+               console.log(`Cache Hit ====== returning post list from Cache ${cacheKey}`)
+               return cachedPost
+            }
+           console.log(`Cache miss ====== returning post list from db`)
           const post = await this.prisma.post.findUnique({where: {id}})
+
           if(!post){
             throw new NotFoundException(`Post with ID: ${id} not found`)
           }
+           await this.cacheManager.set(cacheKey, post,30000)
           return post
      }
 

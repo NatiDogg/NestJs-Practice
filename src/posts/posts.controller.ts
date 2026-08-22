@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param,  Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param,  Patch, Post, UseGuards,Query } from '@nestjs/common';
 import { PostsService } from './posts.service';
 
 import { CreatePostDto } from './dtos/createPostDto';
@@ -9,6 +9,7 @@ import { Role } from 'prisma/generated/prisma/enums';
 import { RolesGuard } from 'src/auth/guards/rolesGuard';
 import { CurrentUser } from 'src/auth/decorators/currentUserDecorator';
 import { User } from 'prisma/generated/prisma/client';
+import { FindPostsQueryDto } from './dtos/findPostsQueryDto';
 
 @Controller('posts')
 export class PostsController {
@@ -16,8 +17,8 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  async findAll() {
-    return await this.postsService.findAll();
+  async findAll(@Query() queryDetails:FindPostsQueryDto) {
+    return await this.postsService.findAll(queryDetails);
   }
 
   @Get(':id')
