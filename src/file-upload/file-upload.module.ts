@@ -9,7 +9,7 @@ import { memoryStorage } from 'multer';
   controllers: [FileUploadController],
   providers: [FileUploadService],
   imports:[CloudinaryModule, MulterModule.register({
-    storage: memoryStorage
+    storage: memoryStorage()
   })]
 })
 export class FileUploadModule {}

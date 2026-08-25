@@ -10,7 +10,7 @@ export class FileUploadService {
 
 
 
-    async uploadFile(file: Express.Multer.File,user: User, description? : string, ): Promise<Image>{
+    async uploadFile(file: Express.Multer.File,user: Omit<User, 'password'>, description? : string, ): Promise<Image>{
          try {
               const cloudinaryResponse = await this.cloudinaryService.uploadFile(file)
           if(!cloudinaryResponse){
@@ -23,7 +23,7 @@ export class FileUploadService {
                  userId: user.id,
                  mimeType: file.mimetype,
                  size: file.size,
-                 originalName: '',
+                 originalName: file.originalname,
                  description
 
              },
