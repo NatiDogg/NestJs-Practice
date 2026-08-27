@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import {ThrottlerModule} from '@nestjs/throttler'
 import {CacheModule} from '@nestjs/cache-manager'
 import { FileUploadModule } from './file-upload/file-upload.module';
+import { EventsModule } from './events/events.module';
 //root module
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { FileUploadModule } from './file-upload/file-upload.module';
 
     }),
     
-    HelloModule, UserModule, PostsModule, PrismaModule, AuthModule, FileUploadModule],
+    HelloModule, UserModule, PostsModule, PrismaModule, AuthModule, FileUploadModule, EventsModule],
   controllers: [AppController],
   providers: [AppService],
 })
