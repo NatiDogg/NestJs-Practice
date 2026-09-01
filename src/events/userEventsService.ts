@@ -17,7 +17,7 @@ export class UserEventsService{
 
      //Emit an user registered events
 
-     emitUserRegistered(user: User): void{
+     emitUserRegistered(user: Omit<User, 'password'>): void{
          const userRegisteredEventData: UserRegisteredEvent = {
               user: {
                 id: user.id,

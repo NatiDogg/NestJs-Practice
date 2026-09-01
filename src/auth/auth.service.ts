@@ -5,12 +5,17 @@ import { UserService } from 'src/user/user.service';
 import { BcryptService } from 'src/utils/bcryptService';
 import { Prisma, User } from 'prisma/generated/prisma/client';
 import { JwtService } from 'src/utils/jwtService';
+import { UserEventsService } from 'src/events/userEventsService';
 
 
 @Injectable()
 export class AuthService {
 
-        constructor(private readonly userService: UserService, private readonly bcryptService:BcryptService, private readonly jwtService:JwtService){}
+        constructor(
+         private readonly userService: UserService, 
+         private readonly bcryptService:BcryptService, 
+         private readonly jwtService:JwtService, 
+         private readonly userEventService: UserEventsService){}
  
        async register(registerDetails: RegisterDto){
             try {
@@ -24,6 +29,11 @@ export class AuthService {
             const hashedPassword = await this.bcryptService.hashPassword(registerDetails.password)
 
             const registeredUser = await this.userService.registerUser({...registerDetails, email: normalizedEmail, password: hashedPassword})
+
+               // Emit the user registered event
+            
+                this.userEventService.emitUserRegistered(registeredUser)
+
                return {
                   success: true,
                   message: 'User Registered Successfully',

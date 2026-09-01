@@ -14,4 +14,4 @@ import { UserEventsService } from './userEventsService';
     providers: [UserEventsService],
     exports: [UserEventsService]
 })
-export class EventsModule {}
+export class EventsModule {} 
