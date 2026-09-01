@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "@nestjs/event-emitter";
 import { User } from "prisma/generated/prisma/client";
-import { email } from "zod";
 
 export interface UserRegisteredEvent{
       user: {
@@ -19,7 +18,7 @@ export class UserEventsService{
      //Emit an user registered events
 
      emitUserRegistered(user: User): void{
-         const event: UserRegisteredEvent = {
+         const userRegisteredEventData: UserRegisteredEvent = {
               user: {
                 id: user.id,
                 name: user.name,
@@ -27,5 +26,8 @@ export class UserEventsService{
               },
               timeStamp: user.createdAt
          }
+
+         this.eventEmitter.emit('user.registered',userRegisteredEventData)
+
      }
 }
